@@ -1,0 +1,89 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+#include<string.h>
+
+void password50(){
+
+}
+
+int main() {
+    srand(time(0));
+
+    char lower[27] = "qwertyuiopasdfghjklzxcvbnm";
+    char upper[27] = "QWERTYUIOPASDFGHJKLZXCVBNM";
+    char numbers[11] = "1234567890";
+    char special[5] = "?+=-";
+    char special2[9] = "?+=-!@#$";
+    char allowedChars[200] = "";
+
+    int strength;
+    printf("Enter the desired strength in %% (50/65/75/85/100): ");
+    scanf("%d", &strength);
+
+    if(strength==50){
+        strcat(allowedChars, numbers);
+        
+        for(int i=0; i<10; i++){
+            printf("%c", allowedChars[rand()%10]);
+        }
+    }
+    else if(strength==65){
+        strcat(allowedChars, numbers);
+        strcat(allowedChars, lower);
+
+        do{
+            
+        }
+    }
+    else if(strength==75){
+        strcat(allowedChars, numbers);
+        strcat(allowedChars, lower);
+        strcat(allowedChars, upper);
+
+        printf("%c", upper[rand()%26]);
+
+        for(int i=0; i<7;i++){
+            printf("%c", allowedChars[rand()%62]);
+        }
+        printf("%c", numbers[rand()%10]);
+        printf("%c", lower[rand()%26]);
+    }
+    else if(strength==85){
+        strcat(allowedChars, numbers);
+        strcat(allowedChars, lower);
+        strcat(allowedChars, upper);
+        strcat(allowedChars, special);
+
+        printf("%c", lower[rand()%26]);
+        printf("%c", numbers[rand()%10]);
+        
+        for(int i=0; i<6;i++){
+            printf("%c", allowedChars[rand()%66]);
+        }   
+
+        printf("%c", upper[rand()%26]);
+        printf("%c", special[rand()%4]);
+    }
+
+    else if(strength==100){
+        strcat(allowedChars, numbers);
+        strcat(allowedChars, lower);
+        strcat(allowedChars, upper);
+        strcat(allowedChars, special2);
+        
+        printf("%c", special2[rand()%8]);
+        printf("%c", numbers[rand()%10]);
+
+        for(int i=0; i<2;i++){
+            printf("%c", special2[rand()%8]);
+            printf("%c", numbers[rand()%10]);
+            printf("%c", allowedChars[rand()%70]);
+            printf("%c", lower[rand()%26]);
+            printf("%c", upper[rand()%26]);
+        }   
+    }
+    return 0;
+}
+
+
