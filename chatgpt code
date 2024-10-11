@@ -1,248 +1,66 @@
-#include <stdio.h>
+#include<stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <conio.h> // Use <ncurses.h> for Linux
+#include<conio.h>
 
-#define SIZE 4
-#define WIN_VALUE 2048
+void initializeGame(int board[4][4]);
+void spawnTile(int board[4][4]);
+void printBoard(int board[4][4]);
 
-void initGame(int board[SIZE][SIZE]);
-void printBoard(int board[SIZE][SIZE]);
-void spawnTile(int board[SIZE][SIZE]);
-void compress(int board[SIZE][SIZE]);
-void merge(int board[SIZE][SIZE]);
-int moveTiles(int board[SIZE][SIZE], int direction);
-int checkGameOver(int board[SIZE][SIZE]);
+int main(){
+    srand(time(0));
 
-int main() {
-    int board[SIZE][SIZE];
-    char input;
+    int board[4][4];
     int gameOver = 0;
 
-    srand(time(0));
-    initGame(board);
-    
-    while (!gameOver) {
+    initializeGame(board);
+    char input;
+
+    while(!gameOver){
         printBoard(board);
-        printf("Use W (up), A (left), S (down), D (right) to move tiles. Press Q to quit.\n");
-        
-        // Get user input
+        printf("Press W (Up), A (Left), S (Down), D (Right) to move tiles. Press Q to exit.\n");
+
         input = _getch();
-        
-        // Handle quit condition
-        if (input == 'q' || input == 'Q') {
-            break;
-        }
-
-        // Handle movement
-        int moved = 0;
-        switch (input) {
-            case 'w': // Up
-                moved = moveTiles(board, 0);
-                break;
-            case 'a': // Left
-                moved = moveTiles(board, 1);
-                break;
-            case 's': // Down
-                moved = moveTiles(board, 2);
-                break;
-            case 'd': // Right
-                moved = moveTiles(board, 3);
-                break;
-            default:
-                printf("Invalid input!\n");
-                continue;
-        }
-
-        // If any tiles were moved, spawn a new tile
-        if (moved) {
-            spawnTile(board);
-        }
-
-        // Check for win condition
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                if (board[i][j] == WIN_VALUE) {
-                    printf("Congratulations! You've reached 2048!\n");
-                    gameOver = 1;
-                    break;
-                }
-            }
-        }
-
-        // Check for game over condition
-        if (checkGameOver(board)) {
-            printf("Game Over! No moves left.\n");
-            gameOver = 1;
-        }
     }
 
-    printBoard(board);
     return 0;
 }
 
-// Initialize the game board with two random tiles
-void initGame(int board[SIZE][SIZE]) {
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++) {
-            board[i][j] = 0;  // Initialize all tiles to 0
+
+
+void initializeGame(int board[4][4]){
+    for(int i=0; i < 4; i++){
+        for(int j=0; j < 4; j++){
+            board[i][j] = 0;
         }
     }
     spawnTile(board);
     spawnTile(board);
 }
 
-// Print the game board
-void printBoard(int board[SIZE][SIZE]) {
+void spawnTile(int board[4][4]){
+    int x, y;
+    do{
+        x = rand()%4;
+        y = rand()%4;
+    } while(board[x][y] != 0);
+
+    int arr[10] = {2, 2, 2, 2, 2, 2, 2, 2, 2, 4};  //Array that spawns 2 with 90% chance and 4 with 10% chance
+    board[x][y] = arr[rand()%10];
+}
+
+void printBoard(int board[4][4]){
     printf("\n");
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++) {
-            if (board[i][j] == 0) {
+    for (int i = 0; i < 4; i++){
+        for (int j = 0; j < 4; j++){
+            if(board[i][j] == 0){
                 printf(".   ");
-            } else {
+            } 
+            else{
                 printf("%-4d", board[i][j]);
             }
         }
         printf("\n");
     }
     printf("\n");
-}
-
-// Spawn a new tile (2 or 4) in a random empty cell
-void spawnTile(int board[SIZE][SIZE]) {
-    int x, y;
-    do {
-        x = rand() % SIZE;
-        y = rand() % SIZE;
-    } while (board[x][y] != 0);
-    
-    board[x][y] = (rand() % 2 + 1) * 2;  // Spawn 2 or 4
-}
-
-// Compress tiles in the specified direction
-void compress(int board[SIZE][SIZE]) {
-    for (int i = 0; i < SIZE; i++) {
-        int pos = 0; // Position to place the compressed tile
-        for (int j = 0; j < SIZE; j++) {
-            if (board[i][j] != 0) {
-                board[i][pos] = board[i][j];
-                if (j != pos) {
-                    board[i][j] = 0;
-                }
-                pos++;
-            }
-        }
-    }
-}
-
-// Merge tiles in the specified direction
-void merge(int board[SIZE][SIZE]) {
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE - 1; j++) {
-            if (board[i][j] != 0 && board[i][j] == board[i][j + 1]) {
-                board[i][j] *= 2; // Double the value
-                board[i][j + 1] = 0; // Remove the merged tile
-            }
-        }
-    }
-}
-
-// Move tiles in the specified direction
-int moveTiles(int board[SIZE][SIZE], int direction) {
-    int moved = 0;
-    
-    switch (direction) {
-        case 0: // Up
-            for (int col = 0; col < SIZE; col++) {
-                // Compress tiles upwards
-                int temp[SIZE] = {0};
-                for (int row = 0; row < SIZE; row++) {
-                    temp[row] = board[row][col];
-                }
-                compress(temp);
-                merge(temp);
-                compress(temp);
-                for (int row = 0; row < SIZE; row++) {
-                    if (board[row][col] != temp[row]) {
-                        moved = 1;
-                    }
-                    board[row][col] = temp[row];
-                }
-            }
-            break;
-        case 1: // Left
-            for (int row = 0; row < SIZE; row++) {
-                // Compress tiles left
-                int temp[SIZE] = {0};
-                for (int col = 0; col < SIZE; col++) {
-                    temp[col] = board[row][col];
-                }
-                compress(temp);
-                merge(temp);
-                compress(temp);
-                for (int col = 0; col < SIZE; col++) {
-                    if (board[row][col] != temp[col]) {
-                        moved = 1;
-                    }
-                    board[row][col] = temp[col];
-                }
-            }
-            break;
-        case 2: // Down
-            for (int col = 0; col < SIZE; col++) {
-                // Compress tiles downwards
-                int temp[SIZE] = {0};
-                for (int row = 0; row < SIZE; row++) {
-                    temp[SIZE - 1 - row] = board[row][col];
-                }
-                compress(temp);
-                merge(temp);
-                compress(temp);
-                for (int row = 0; row < SIZE; row++) {
-                    if (board[row][col] != temp[SIZE - 1 - row]) {
-                        moved = 1;
-                    }
-                    board[row][col] = temp[SIZE - 1 - row];
-                }
-            }
-            break;
-        case 3: // Right
-            for (int row = 0; row < SIZE; row++) {
-                // Compress tiles right
-                int temp[SIZE] = {0};
-                for (int col = 0; col < SIZE; col++) {
-                    temp[SIZE - 1 - col] = board[row][col];
-                }
-                compress(temp);
-                merge(temp);
-                compress(temp);
-                for (int col = 0; col < SIZE; col++) {
-                    if (board[row][col] != temp[SIZE - 1 - col]) {
-                        moved = 1;
-                    }
-                    board[row][col] = temp[SIZE - 1 - col];
-                }
-            }
-            break;
-    }
-    return moved;
-}
-
-// Check if the game is over (no moves left)
-int checkGameOver(int board[SIZE][SIZE]) {
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++) {
-            if (board[i][j] == 0) {
-                return 0; // Empty tile exists
-            }
-            // Check for adjacent tiles with the same value
-            if (j < SIZE - 1 && board[i][j] == board[i][j + 1]) {
-                return 0; // Horizontal merge possible
-            }
-            if (i < SIZE - 1 && board[i][j] == board[i + 1][j]) {
-                return 0; // Vertical merge possible
-            }
-        }
-    }
-    return 1; // No moves left
 }
