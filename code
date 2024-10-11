@@ -1,1 +1,35 @@
+#include<stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
+void initializeGame(int board[4][4]);
+void spawnTile(int board[4][4]);
+
+int main(){
+    srand(time(0));
+
+    return 0;
+}
+
+
+
+void initializeGame(int board[4][4]){
+    for(int i=0; i < 4; i++){
+        for(int j=0; j < 4; j++){
+            board[i][j] = 0;
+        }
+    }
+    spawnTile(board);
+    spawnTile(board);
+}
+
+void spawnTile(int board[4][4]){
+    int x, y;
+    do{
+        x = rand()%4;
+        y = rand()%4;
+    } while(board[x][y] != 0);
+
+    int arr[10] = {2, 2, 2, 2, 2, 2, 2, 2, 2, 4};  //Array that spawns 2 with 90% chance and 4 with 10% chance
+    board[x][y] = arr[rand()%10];
+}
