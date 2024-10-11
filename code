@@ -1,12 +1,27 @@
 #include<stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include<conio.h>
 
 void initializeGame(int board[4][4]);
 void spawnTile(int board[4][4]);
+void printBoard(int board[4][4]);
 
 int main(){
     srand(time(0));
+
+    int board[4][4];
+    int gameOver = 0;
+
+    initializeGame(board);
+    char input;
+
+    while(!gameOver){
+        printBoard(board);
+        printf("Press W (Up), A (Left), S (Down), D (Right) to move tiles. Press Q to exit.\n");
+
+        input = _getch();
+    }
 
     return 0;
 }
@@ -32,4 +47,20 @@ void spawnTile(int board[4][4]){
 
     int arr[10] = {2, 2, 2, 2, 2, 2, 2, 2, 2, 4};  //Array that spawns 2 with 90% chance and 4 with 10% chance
     board[x][y] = arr[rand()%10];
+}
+
+void printBoard(int board[4][4]){
+    printf("\n");
+    for (int i = 0; i < 4; i++){
+        for (int j = 0; j < 4; j++){
+            if(board[i][j] == 0){
+                printf(".   ");
+            } 
+            else{
+                printf("%-4d", board[i][j]);
+            }
+        }
+        printf("\n");
+    }
+    printf("\n");
 }
