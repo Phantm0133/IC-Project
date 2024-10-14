@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include<conio.h>
+#include<ctype.h>
 
 void initializeGame(int board[4][4]);
 void spawnTile(int board[4][4]);
@@ -16,11 +17,15 @@ int main(){
     initializeGame(board);
     char input;
 
-    while(!gameOver){
+    while(gameOver==0){
         printBoard(board);
         printf("Press W (Up), A (Left), S (Down), D (Right) to move tiles. Press Q to exit.\n");
 
         input = _getch();
+
+        if(input=='q' || input=='Q'){
+            break;
+        }
     }
 
     return 0;
