@@ -10,14 +10,15 @@ void printBoard(int board[4][4]);
 void moveUp(int board[4][4]);
 void moveDown(int board[4][4]);
 void moveRight(int board[4][4]);
-void moveLeft(int bo//UwU
+void moveLeft(int board[4][4]);
+
 int main(){
     srand(time(0));
 
-    int board[4][4];
+    int board[4][4] = {{0,2,0,0},{0,2,0,0},{0,2,0,0},{0,2,0,0}};
     int gameOver = 0;
 
-    initializeGame(board);
+    //initializeGame(board);
     char input;
 
     while(gameOver==0){
@@ -32,9 +33,7 @@ int main(){
 
         switch(tolower(input)){
             case 'w': moveUp(board); break;
-            case 'a': moveLeft(board); break;
-            case 's': moveDown(board); break;
-            case 'd': moveRight(board); break;
+            
         }
     }
 
@@ -81,8 +80,33 @@ void printBoard(int board[4][4]){
 }
 
 void moveUp(int board[4][4]){
-    for(int i=0; i<4; i++){
-        for(int j=1; )
+    for(int i=1; i<4; i++){
+        for(int j=0; j<4; j++){
+            int k = i;      //Temporary variable to mimic i and be able to decrement itself.
+            while(board[k-1][j]==0 && k>=0){
+                int temp = board[k][j];  //Swapping the cell with the empty cell above it.
+                board[k][j] = board[k-1][j];
+                board[k-1][j] = temp;
+                k--;
+            }
+        }
+    }
+    for(int i=0; i<3; i++){
+        for(int j=0; j<4; j++){
+            if(board[i][j]==board[i+1][j]){
+                board[i][j] *= 2;
+                board[i+1][j] = 0;
+                for(int k = i+2; k<4; k++){
+                    int h = k;
+                    while(board[h-1][j]==0 && h>=0){
+                        int temp = board[h][j];  //Swapping the cell with the empty cell above it.
+                        board[h][j] = board[h-1][j];
+                        board[h-1][j] = temp;
+                        h--;
+            }
+                }
+            }
+        }
     }
 }
 
