@@ -3,11 +3,14 @@
 #include <time.h>
 #include<conio.h>
 #include<ctype.h>
-
+//UwU
 void initializeGame(int board[4][4]);
 void spawnTile(int board[4][4]);
 void printBoard(int board[4][4]);
-
+void moveUp(int board[4][4]);
+void moveDown(int board[4][4]);
+void moveRight(int board[4][4]);
+void moveLeft(int bo//UwU
 int main(){
     srand(time(0));
 
@@ -25,6 +28,13 @@ int main(){
 
         if(input=='q' || input=='Q'){
             break;
+        }
+
+        switch(tolower(input)){
+            case 'w': moveUp(board); break;
+            case 'a': moveLeft(board); break;
+            case 's': moveDown(board); break;
+            case 'd': moveRight(board); break;
         }
     }
 
@@ -69,3 +79,10 @@ void printBoard(int board[4][4]){
     }
     printf("\n");
 }
+
+void moveUp(int board[4][4]){
+    for(int i=0; i<4; i++){
+        for(int j=1; )
+    }
+}
+
