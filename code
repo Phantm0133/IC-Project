@@ -98,7 +98,7 @@ void moveUp(int board[4][4]){
         for(int i = 1; i < 4; i++){  
             int k = i; //Temporary variable to mimic i and be able to decrement itself.
             while(k > 0 && board[k-1][j] == 0){  
-                int temp= board[k-1][j];  //Swapping the cell with the empty cell left of it.
+                int temp= board[k-1][j];  
                 board[k-1][j] = board[k][j];
                 board[k][j] = temp;
                 k--;  // Move Up
@@ -115,11 +115,11 @@ void moveUp(int board[4][4]){
         }
     }
     
-    // After combining, shift all numbers to the left again
+    // After combining, shift all numbers to the Up again
     for(int j = 0; j < 4; j++){
         for(int i = 1; i < 4; i++){
             int k = i;
-            while(k > 0 && board[k-1][j] == 0){  // While the left cell is empty
+            while(k > 0 && board[k-1][j] == 0){  
                 board[k-1][j] = board[k][j];
                 board[k][j] = 0;
                 k--;  // Move Up
@@ -132,7 +132,7 @@ void moveLeft(int board[4][4]){
         for(int j = 1; j < 4; j++){  
             int k = j; //Temporary variable to mimic i and be able to decrement itself.
             while(k > 0 && board[i][k-1] == 0){  
-                int temp= board[i][k-1];  //Swapping the cell with the empty cell left of it.
+                int temp= board[i][k-1];  
                 board[i][k-1] = board[i][k];
                 board[i][k] = temp;
                 k--;  // Move left
@@ -166,7 +166,7 @@ void moveRight(int board[4][4]){
         for(int j = 2; j >=0; j--){  
             int k = j; //Temporary variable to mimic i and be able to decrement itself.
             while(k < 3 && board[i][k+1] == 0){  
-                int temp= board[i][k+1];  //Swapping the cell with the empty cell left of it.
+                int temp= board[i][k+1];  
                 board[i][k+1] = board[i][k];
                 board[i][k] = temp;
                 k++;  // Move right
@@ -183,11 +183,11 @@ void moveRight(int board[4][4]){
         }
     }
     
-    // After combining, shift all numbers to the left again
+    // After combining, shift all numbers to the right again
     for(int i = 0; i < 4; i++){
         for(int j = 2; j >= 0; j--){
             int k = j;
-            while(k < 3 && board[i][k+1] == 0){  // While the left cell is empty
+            while(k < 3 && board[i][k+1] == 0){ 
                 board[i][k+1] = board[i][k];
                 board[i][k] = 0;
                 k++;  // Move right
@@ -200,10 +200,10 @@ void moveDown(int board[4][4]){
         for(int i = 2; i >=0; i--){  
             int k = i; //Temporary variable to mimic i and be able to decrement itself.
             while(k < 3 && board[k+1][j] == 0){  
-                int temp= board[k+1][j];  //Swapping the cell with the empty cell left of it.
+                int temp= board[k+1][j];  //Swapping the cell with the empty cell below of it.
                 board[k+1][j] = board[k][j];
                 board[k][j] = temp;
-                k++;  // Move right
+                k++;  // Move Down
             }
         }
     }
@@ -217,14 +217,14 @@ void moveDown(int board[4][4]){
         }
     }
     
-    // After combining, shift all numbers to the left again
+    // After combining, shift all numbers to the Down again
     for(int j = 0; j < 4; j++){
         for(int i = 2; i >= 0; i--){
             int k = i;
-            while(k < 3 && board[k+1][j] == 0){  // While the left cell is empty
+            while(k < 3 && board[k+1][j] == 0){  
                 board[k+1][j] = board[k][j];
                 board[k][j] = 0;
-                k++;  // Move right
+                k++;  // Move Down
             }
         }
     }
