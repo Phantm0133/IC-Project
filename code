@@ -11,6 +11,8 @@ void moveUp(int board[4][4]);
 void moveDown(int board[4][4]);
 void moveRight(int board[4][4]);
 void moveLeft(int board[4][4]);
+void score(int board[4][4]);
+int checkGameOver(int board[4][4]);
 
 int main(){
     srand(time(0));
@@ -19,6 +21,7 @@ int main(){
     int gameOver = 0;
 
     initializeGame(board);
+    score(board);
     char input;
 
     while(gameOver==0){
@@ -32,29 +35,16 @@ int main(){
         }
 
         switch(tolower(input)){
-            case 'w': 
-            moveUp(board);
-            spawnTile(board);
-            break;
-            case 'a': 
-            moveLeft(board); 
-            spawnTile(board);
-            break;
-            case 'd':
-            moveRight(board);
-            spawnTile(board);
-            break;
-            case 's':
-            moveDown(board);
-            spawnTile(board);
-            break;
+            case 'w': moveUp(board); spawnTile(board); break;
+            case 'a': moveLeft(board); spawnTile(board); break;
+            case 'd': moveRight(board); spawnTile(board); break;
+            case 's': moveDown(board); spawnTile(board); break;
+            default: printf("Invalid Input."); continue;
         }
     }
 
     return 0;
 }
-
-
 
 void initializeGame(int board[4][4]){
     for(int i=0; i < 4; i++){
@@ -91,6 +81,40 @@ void printBoard(int board[4][4]){
         printf("\n");
     }
     printf("\n");
+}
+
+//In progress
+void score(int board[4][4]){
+    //Calculate current score.
+
+
+
+    //Retrieve high score from file.
+    FILE *pF = fopen("hscr.txt", "r");
+    int score;
+
+    fscanf(pF, "%d", &score);
+
+
+
+    fclose(pF);
+}
+
+int checkGameOver(int board[4][4]){
+    for(int i=0; i<4; i++){
+        for(int j=0; j<4; j++){
+            if(board[i][j]==0){
+                return 0;
+            }
+            if(board[i][j] == board[i][j+1] && j<3){
+                return 0;
+            }
+            if(board[i][j] == board[i+1][j] && i<3){
+                return 0;
+            }
+        }
+    }
+    return 1;
 }
 
 void moveUp(int board[4][4]){
