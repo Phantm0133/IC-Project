@@ -39,6 +39,10 @@ int main(){
             case 'a': moveLeft(board); spawnTile(board); break;
             case 'd': moveRight(board); spawnTile(board); break;
             case 's': moveDown(board); spawnTile(board); break;
+            case '8': moveUp(board); spawnTile(board); break;
+            case '4': moveLeft(board); spawnTile(board); break;
+            case '6': moveRight(board); spawnTile(board); break;
+            case '2': moveDown(board); spawnTile(board); break;
             default: printf("Invalid Input."); continue;
         }
     }
@@ -187,10 +191,10 @@ void moveLeft(int board[4][4]){
 }
 void moveRight(int board[4][4]){
     for(int i = 0; i < 4; i++){  
-        for(int j = 2; j >=0; j--){  
+        for(int j = 2; j >= 0; j--){  
             int k = j; //Temporary variable to mimic i and be able to decrement itself.
             while(k < 3 && board[i][k+1] == 0){  
-                int temp= board[i][k+1];  
+                int temp = board[i][k+1];  
                 board[i][k+1] = board[i][k];
                 board[i][k] = temp;
                 k++;  // Move right
@@ -199,15 +203,14 @@ void moveRight(int board[4][4]){
     }
     
     for(int i = 0; i < 4; i++){
-        for(int j = 2; j > 0; j--){  
-            if(board[i][j] == board[i][j+1] && board[i][j] != 0){  // If tiles are the same
-                board[i][j+1] *= 2;  // Double the value
-                board[i][j] = 0;  
+        for(int j = 3; j > 0; j--){  
+            if(board[i][j] == board[i][j-1] && board[i][j] != 0){  // If tiles are the same
+                board[i][j] *= 2;  // Double the value
+                board[i][j-1] = 0;  
             }
         }
     }
     
-    // After combining, shift all numbers to the right again
     for(int i = 0; i < 4; i++){
         for(int j = 2; j >= 0; j--){
             int k = j;
