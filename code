@@ -45,6 +45,12 @@ int main(){
             case '2': moveDown(board); spawnTile(board); break;
             default: printf("Invalid Input."); continue;
         }
+
+        gameOver = checkGameOver(board);
+        if(gameOver==1){
+            printBoard(board);
+            printf("Game over! Better luck next time!");
+        }
     }
 
     return 0;
