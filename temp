@@ -101,16 +101,7 @@ void printBoard(int board[4][4]){
 }
 
 void printScore(int board[4][4]){
-    //Calculate current score.
-    int max=0;
-    for(int i=0; i<4; i++){
-        for(int j=0; j<4; j++){
-            if(board[i][j]>max){
-                max = board[i][j];
-            }
-        }
-    }
-
+    
     //Retrieve high score from file.
     FILE *pF = fopen("hscr.txt", "r");
     int scr=0;
@@ -119,14 +110,14 @@ void printScore(int board[4][4]){
     fclose(pF);
 
     //Write onto file.
-    if(max > scr){
-        scr = max;
+    if(cscr > scr){
+        scr = cscr;
         FILE *pF = fopen("hscr.txt", "w");
         fprintf(pF, "%d", scr);
         fclose(pF);
     }
 
-    printf("CURRENT SCORE: %d\n", max);
+    printf("CURRENT SCORE: %d\n", cscr);
     printf("HIGH SCORE: %d\n", scr);
 }
 
@@ -203,7 +194,7 @@ void moveUp(int board[4][4]){
         for(int i = 0; i < 3; i++){  
             if(board[i][j] == board[i+1][j] && board[i][j] != 0){  // If tiles are the same
                 board[i][j] *= 2;  // Double the value
-
+                cscr += board[i][j];
                 board[i+1][j] = 0;  
             }
         }
@@ -238,6 +229,7 @@ void moveLeft(int board[4][4]){
         for(int j = 0; j < 3; j++){  
             if(board[i][j] == board[i][j+1] && board[i][j] != 0){  // If tiles are the same
                 board[i][j] *= 2;  // Double the value
+                cscr += board[i][j];
                 board[i][j+1] = 0;  
             }
         }
@@ -272,6 +264,7 @@ void moveRight(int board[4][4]){
         for(int j = 3; j > 0; j--){  
             if(board[i][j] == board[i][j-1] && board[i][j] != 0){  // If tiles are the same
                 board[i][j] *= 2;  // Double the value
+                cscr += board[i][j];
                 board[i][j-1] = 0;  
             }
         }
@@ -305,6 +298,7 @@ void moveDown(int board[4][4]){
         for(int i = 2; i >= 0; i--){  
             if(board[i][j] == board[i+1][j] && board[i][j] != 0){  // If tiles are the same
                 board[i+1][j] *= 2;  // Double the value
+                cscr += board[i+1][j];
                 board[i][j] = 0;  
             }
         }
