@@ -25,7 +25,7 @@ int main() {
     char wish;
     int score =0;
      printf("DO YOU WISH TO LOAD A SAVED ADVENTURE? \n");
-     printf("PRESS ANY KEY TO LOAD LAST GAME \n PRESS N FOR NEW GAME \n");
+     printf("PRESS Y TO LOAD LAST GAME \n PRESS N FOR NEW GAME \n");
      wish = _getch();
      if(wish=='n' || wish =='N') {
         initializeGame(board);
