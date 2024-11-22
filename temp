@@ -110,12 +110,21 @@ void printScore(int board[4][4]){
     fclose(pF);
 
     //Write onto file.
+        pF = fopen("hscr.txt", "w");
     if(cscr > scr){
         scr = cscr;
-        FILE *pF = fopen("hscr.txt", "w");
-        fprintf(pF, "%d", scr);
-        fclose(pF);
-    }
+        fprintf(pF, "%d\n", scr);
+}
+else {
+fprintf(pF,"%d\n" , scr);
+}
+for(int i=0;i<4;i++) {
+for(int j=0;j<4;j++) {
+fprintf(pF, "%-4d" ,board[i][j]);
+}
+fprintf(pF , "\n");
+}
+fclose(pF);
 
     printf("CURRENT SCORE: %d\n", cscr);
     printf("HIGH SCORE: %d\n", scr);
