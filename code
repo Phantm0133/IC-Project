@@ -3,6 +3,7 @@
 #include<time.h>
 #include<conio.h>
 #include<ctype.h>
+#include<windows.h>
 //UwU
 void initializeGame(int board[4][4]);
 void spawnTile(int board[4][4]);
@@ -11,25 +12,29 @@ void moveUp(int board[4][4]);
 void moveDown(int board[4][4]);
 void moveRight(int board[4][4]);
 void moveLeft(int board[4][4]);
-void score(int board[4][4]);
+void printScore(int board[4][4]);
 int checkGameOver(int board[4][4]);
 void checkWin(int board[4][4]);
 
 int trigger = 0;
+int cscr = 0;
 
 int main(){
     srand(time(0));
-
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    
     int board[4][4];
     int gameOver = 0;
 
     initializeGame(board);
-    score(board);
     char input;
 
     while(gameOver==0){
+        printScore(board);
         printBoard(board);
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
         printf("Press W (Up), A (Left), S (Down), D (Right) to move tiles. Press Q to exit.\n");
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 
         input = _getch();
 
@@ -53,6 +58,7 @@ int main(){
         if(gameOver==1){
             printBoard(board);
             printf("Game Over! Better luck next time!");
+            Sleep(5000);
         }
 
         checkWin(board);
@@ -99,21 +105,30 @@ void printBoard(int board[4][4]){
     printf("\n");
 }
 
-//In progress
-void score(int board[4][4]){
-    //Calculate current score.
-
-
-
+void printScore(int board[4][4]){
+    
     //Retrieve high score from file.
     FILE *pF = fopen("hscr.txt", "r");
-    int score;
+    int scr=0;
 
-    fscanf(pF, "%d", &score);
-
-
-
+    fscanf(pF, "%d", &scr);
     fclose(pF);
+
+    //Write onto file.
+    if(cscr > scr){
+        scr = cscr;
+        FILE *pF = fopen("hscr.txt", "w");
+        fprintf(pF, "%d", scr);
+        fclose(pF);
+    }
+
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+    printf("CURRENT SCORE: %d\n", cscr);
+    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);
+    printf("HIGH SCORE: %d\n", scr);
+    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 }
 
 void checkWin(int board[4][4]){
@@ -122,7 +137,8 @@ void checkWin(int board[4][4]){
     }
     for(int i=0; i<4; i++){
         for(int j=0; j<4; j++){
-            if(board[i][j]==8){
+            if(board[i][j]==2048){
+                system("cls");
                 printBoard(board);
                 char ch;
                 printf("Congratulations! You have won. Do you want to continue? (Y/N): ");
@@ -188,6 +204,7 @@ void moveUp(int board[4][4]){
         for(int i = 0; i < 3; i++){  
             if(board[i][j] == board[i+1][j] && board[i][j] != 0){  // If tiles are the same
                 board[i][j] *= 2;  // Double the value
+                cscr += board[i][j];
                 board[i+1][j] = 0;  
             }
         }
@@ -222,6 +239,7 @@ void moveLeft(int board[4][4]){
         for(int j = 0; j < 3; j++){  
             if(board[i][j] == board[i][j+1] && board[i][j] != 0){  // If tiles are the same
                 board[i][j] *= 2;  // Double the value
+                cscr += board[i][j];
                 board[i][j+1] = 0;  
             }
         }
@@ -256,6 +274,7 @@ void moveRight(int board[4][4]){
         for(int j = 3; j > 0; j--){  
             if(board[i][j] == board[i][j-1] && board[i][j] != 0){  // If tiles are the same
                 board[i][j] *= 2;  // Double the value
+                cscr += board[i][j];
                 board[i][j-1] = 0;  
             }
         }
@@ -289,6 +308,7 @@ void moveDown(int board[4][4]){
         for(int i = 2; i >= 0; i--){  
             if(board[i][j] == board[i+1][j] && board[i][j] != 0){  // If tiles are the same
                 board[i+1][j] *= 2;  // Double the value
+                cscr += board[i+1][j];
                 board[i][j] = 0;  
             }
         }
